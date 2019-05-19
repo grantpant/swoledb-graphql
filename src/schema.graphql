@@ -1,0 +1,51 @@
+type Query {
+  exercises: [Exercise!]!
+}
+
+type Mutation {
+  createExercise(data: CreateExerciseInput!): Exercise!
+}
+
+input CreateExerciseInput {
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: [TrainingPhaseInput!]
+  workoutTypes: [WorkoutTypeInput!]
+  equipment: [EquipmentPieceInput!]
+}
+
+input TrainingPhaseInput {
+  name: String!
+}
+
+input WorkoutTypeInput {
+  name: String!
+}
+
+input EquipmentPieceInput {
+  name: String!
+}
+
+type Exercise {
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: [TrainingPhase!]
+  workoutTypes: [WorkoutType!]
+  equipment: [EquipmentPiece!]
+}
+
+type TrainingPhase {
+  name: String!
+}
+
+type WorkoutType {
+  name: String!
+}
+
+type EquipmentPiece {
+  name: String!
+}

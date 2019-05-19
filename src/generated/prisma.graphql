@@ -1,0 +1,1055 @@
+# source: http://192.168.99.100:4466/swole/dev
+# timestamp: Fri May 17 2019 23:19:34 GMT-0500 (Central Daylight Time)
+
+type AggregateEquipmentPiece {
+  count: Int!
+}
+
+type AggregateExercise {
+  count: Int!
+}
+
+type AggregateTrainingPhase {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type AggregateWorkoutType {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type EquipmentPiece {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type EquipmentPieceConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EquipmentPieceEdge]!
+  aggregate: AggregateEquipmentPiece!
+}
+
+input EquipmentPieceCreateInput {
+  name: String!
+}
+
+input EquipmentPieceCreateManyInput {
+  create: [EquipmentPieceCreateInput!]
+}
+
+"""An edge in a connection."""
+type EquipmentPieceEdge {
+  """The item at the end of the edge."""
+  node: EquipmentPiece!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum EquipmentPieceOrderByInput {
+  name_ASC
+  name_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type EquipmentPiecePreviousValues {
+  name: String!
+}
+
+type EquipmentPieceSubscriptionPayload {
+  mutation: MutationType!
+  node: EquipmentPiece
+  updatedFields: [String!]
+  previousValues: EquipmentPiecePreviousValues
+}
+
+input EquipmentPieceSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EquipmentPieceSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EquipmentPieceSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EquipmentPieceSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: EquipmentPieceWhereInput
+}
+
+input EquipmentPieceUpdateInput {
+  name: String
+}
+
+input EquipmentPieceUpdateManyInput {
+  create: [EquipmentPieceCreateInput!]
+}
+
+input EquipmentPieceWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EquipmentPieceWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EquipmentPieceWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EquipmentPieceWhereInput!]
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+type Exercise implements Node {
+  id: ID!
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TrainingPhase!]
+  workoutTypes(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkoutType!]
+  equipment(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece!]
+}
+
+"""A connection to a list of items."""
+type ExerciseConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExerciseEdge]!
+  aggregate: AggregateExercise!
+}
+
+input ExerciseCreateInput {
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: TrainingPhaseCreateManyInput
+  workoutTypes: WorkoutTypeCreateManyInput
+  equipment: EquipmentPieceCreateManyInput
+}
+
+"""An edge in a connection."""
+type ExerciseEdge {
+  """The item at the end of the edge."""
+  node: Exercise!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ExerciseOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  bodySection_ASC
+  bodySection_DESC
+  primaryMover_ASC
+  primaryMover_DESC
+  movementType_ASC
+  movementType_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ExercisePreviousValues {
+  id: ID!
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+}
+
+type ExerciseSubscriptionPayload {
+  mutation: MutationType!
+  node: Exercise
+  updatedFields: [String!]
+  previousValues: ExercisePreviousValues
+}
+
+input ExerciseSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExerciseSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExerciseSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExerciseSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ExerciseWhereInput
+}
+
+input ExerciseUpdateInput {
+  name: String
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: TrainingPhaseUpdateManyInput
+  workoutTypes: WorkoutTypeUpdateManyInput
+  equipment: EquipmentPieceUpdateManyInput
+}
+
+input ExerciseWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExerciseWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExerciseWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExerciseWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  bodySection: String
+
+  """All values that are not equal to given value."""
+  bodySection_not: String
+
+  """All values that are contained in given list."""
+  bodySection_in: [String!]
+
+  """All values that are not contained in given list."""
+  bodySection_not_in: [String!]
+
+  """All values less than the given value."""
+  bodySection_lt: String
+
+  """All values less than or equal the given value."""
+  bodySection_lte: String
+
+  """All values greater than the given value."""
+  bodySection_gt: String
+
+  """All values greater than or equal the given value."""
+  bodySection_gte: String
+
+  """All values containing the given string."""
+  bodySection_contains: String
+
+  """All values not containing the given string."""
+  bodySection_not_contains: String
+
+  """All values starting with the given string."""
+  bodySection_starts_with: String
+
+  """All values not starting with the given string."""
+  bodySection_not_starts_with: String
+
+  """All values ending with the given string."""
+  bodySection_ends_with: String
+
+  """All values not ending with the given string."""
+  bodySection_not_ends_with: String
+  primaryMover: String
+
+  """All values that are not equal to given value."""
+  primaryMover_not: String
+
+  """All values that are contained in given list."""
+  primaryMover_in: [String!]
+
+  """All values that are not contained in given list."""
+  primaryMover_not_in: [String!]
+
+  """All values less than the given value."""
+  primaryMover_lt: String
+
+  """All values less than or equal the given value."""
+  primaryMover_lte: String
+
+  """All values greater than the given value."""
+  primaryMover_gt: String
+
+  """All values greater than or equal the given value."""
+  primaryMover_gte: String
+
+  """All values containing the given string."""
+  primaryMover_contains: String
+
+  """All values not containing the given string."""
+  primaryMover_not_contains: String
+
+  """All values starting with the given string."""
+  primaryMover_starts_with: String
+
+  """All values not starting with the given string."""
+  primaryMover_not_starts_with: String
+
+  """All values ending with the given string."""
+  primaryMover_ends_with: String
+
+  """All values not ending with the given string."""
+  primaryMover_not_ends_with: String
+  movementType: String
+
+  """All values that are not equal to given value."""
+  movementType_not: String
+
+  """All values that are contained in given list."""
+  movementType_in: [String!]
+
+  """All values that are not contained in given list."""
+  movementType_not_in: [String!]
+
+  """All values less than the given value."""
+  movementType_lt: String
+
+  """All values less than or equal the given value."""
+  movementType_lte: String
+
+  """All values greater than the given value."""
+  movementType_gt: String
+
+  """All values greater than or equal the given value."""
+  movementType_gte: String
+
+  """All values containing the given string."""
+  movementType_contains: String
+
+  """All values not containing the given string."""
+  movementType_not_contains: String
+
+  """All values starting with the given string."""
+  movementType_starts_with: String
+
+  """All values not starting with the given string."""
+  movementType_not_starts_with: String
+
+  """All values ending with the given string."""
+  movementType_ends_with: String
+
+  """All values not ending with the given string."""
+  movementType_not_ends_with: String
+  trainingPhases_every: TrainingPhaseWhereInput
+  trainingPhases_some: TrainingPhaseWhereInput
+  trainingPhases_none: TrainingPhaseWhereInput
+  workoutTypes_every: WorkoutTypeWhereInput
+  workoutTypes_some: WorkoutTypeWhereInput
+  workoutTypes_none: WorkoutTypeWhereInput
+  equipment_every: EquipmentPieceWhereInput
+  equipment_some: EquipmentPieceWhereInput
+  equipment_none: EquipmentPieceWhereInput
+}
+
+input ExerciseWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+  createExercise(data: ExerciseCreateInput!): Exercise!
+  createEquipmentPiece(data: EquipmentPieceCreateInput!): EquipmentPiece!
+  createWorkoutType(data: WorkoutTypeCreateInput!): WorkoutType!
+  createTrainingPhase(data: TrainingPhaseCreateInput!): TrainingPhase!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyExercises(data: ExerciseUpdateInput!, where: ExerciseWhereInput): BatchPayload!
+  updateManyEquipmentPieces(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereInput): BatchPayload!
+  updateManyWorkoutTypes(data: WorkoutTypeUpdateInput!, where: WorkoutTypeWhereInput): BatchPayload!
+  updateManyTrainingPhases(data: TrainingPhaseUpdateInput!, where: TrainingPhaseWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
+  deleteManyEquipmentPieces(where: EquipmentPieceWhereInput): BatchPayload!
+  deleteManyWorkoutTypes(where: WorkoutTypeWhereInput): BatchPayload!
+  deleteManyTrainingPhases(where: TrainingPhaseWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
+  equipmentPieces(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece]!
+  workoutTypes(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkoutType]!
+  trainingPhases(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TrainingPhase]!
+  user(where: UserWhereUniqueInput!): User
+  exercise(where: ExerciseWhereUniqueInput!): Exercise
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
+  equipmentPiecesConnection(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EquipmentPieceConnection!
+  workoutTypesConnection(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WorkoutTypeConnection!
+  trainingPhasesConnection(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TrainingPhaseConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
+  equipmentPiece(where: EquipmentPieceSubscriptionWhereInput): EquipmentPieceSubscriptionPayload
+  workoutType(where: WorkoutTypeSubscriptionWhereInput): WorkoutTypeSubscriptionPayload
+  trainingPhase(where: TrainingPhaseSubscriptionWhereInput): TrainingPhaseSubscriptionPayload
+}
+
+type TrainingPhase {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type TrainingPhaseConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TrainingPhaseEdge]!
+  aggregate: AggregateTrainingPhase!
+}
+
+input TrainingPhaseCreateInput {
+  name: String!
+}
+
+input TrainingPhaseCreateManyInput {
+  create: [TrainingPhaseCreateInput!]
+}
+
+"""An edge in a connection."""
+type TrainingPhaseEdge {
+  """The item at the end of the edge."""
+  node: TrainingPhase!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TrainingPhaseOrderByInput {
+  name_ASC
+  name_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type TrainingPhasePreviousValues {
+  name: String!
+}
+
+type TrainingPhaseSubscriptionPayload {
+  mutation: MutationType!
+  node: TrainingPhase
+  updatedFields: [String!]
+  previousValues: TrainingPhasePreviousValues
+}
+
+input TrainingPhaseSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TrainingPhaseSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TrainingPhaseSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TrainingPhaseSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TrainingPhaseWhereInput
+}
+
+input TrainingPhaseUpdateInput {
+  name: String
+}
+
+input TrainingPhaseUpdateManyInput {
+  create: [TrainingPhaseCreateInput!]
+}
+
+input TrainingPhaseWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TrainingPhaseWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TrainingPhaseWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TrainingPhaseWhereInput!]
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  name: String!
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  name: String
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input UserWhereUniqueInput {
+  id: ID
+}
+
+type WorkoutType {
+  name: String!
+}
+
+"""A connection to a list of items."""
+type WorkoutTypeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WorkoutTypeEdge]!
+  aggregate: AggregateWorkoutType!
+}
+
+input WorkoutTypeCreateInput {
+  name: String!
+}
+
+input WorkoutTypeCreateManyInput {
+  create: [WorkoutTypeCreateInput!]
+}
+
+"""An edge in a connection."""
+type WorkoutTypeEdge {
+  """The item at the end of the edge."""
+  node: WorkoutType!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum WorkoutTypeOrderByInput {
+  name_ASC
+  name_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type WorkoutTypePreviousValues {
+  name: String!
+}
+
+type WorkoutTypeSubscriptionPayload {
+  mutation: MutationType!
+  node: WorkoutType
+  updatedFields: [String!]
+  previousValues: WorkoutTypePreviousValues
+}
+
+input WorkoutTypeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WorkoutTypeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WorkoutTypeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WorkoutTypeSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WorkoutTypeWhereInput
+}
+
+input WorkoutTypeUpdateInput {
+  name: String
+}
+
+input WorkoutTypeUpdateManyInput {
+  create: [WorkoutTypeCreateInput!]
+}
+
+input WorkoutTypeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WorkoutTypeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WorkoutTypeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WorkoutTypeWhereInput!]
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}

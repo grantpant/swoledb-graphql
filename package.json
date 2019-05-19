@@ -1,0 +1,24 @@
+{
+  "name": "swoledb-graphql",
+  "version": "1.0.0",
+  "description": "GraphQL API for SwoleDB",
+  "main": "index.js",
+  "scripts": {
+    "get-schema": "graphql get-schema -p prisma",
+    "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grant Thompson",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "graphql-cli": "^3.0.11",
+    "graphql-yoga": "^1.17.4",
+    "nodemon": "^1.19.0",
+    "prisma-binding": "^2.3.10"
+  }
+}
