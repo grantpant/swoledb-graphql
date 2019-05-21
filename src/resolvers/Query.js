@@ -1,6 +1,6 @@
 const Query = {
-  async exercises(parent, args, { prisma }) {
-    return await prisma.query.exercises(null, '{ name }');
+  exercises(parent, args, { prisma }, info) {
+    return prisma.query.exercises(args, info);
   }
 };
 

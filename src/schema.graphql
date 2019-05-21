@@ -1,5 +1,7 @@
+# import ExerciseWhereInput from './generated/prisma.graphql'
+
 type Query {
-  exercises: [Exercise!]!
+  exercises(where: ExerciseWhereInput): [Exercise!]!
 }
 
 type Mutation {
