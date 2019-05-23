@@ -1,4 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga';
+import '@babel/polyfill';
 import mockDb from './mockDb';
 import Query from './resolvers/Query';
 import Mutation from './resolvers/Mutation';
@@ -16,6 +17,6 @@ const server = new GraphQLServer({
   }
 });
 
-server.start({ port: 4000 }, () => {
+server.start({ port: process.env.PORT || 4000 }, () => {
   console.log('SwoleDB GraphQL API server listening for requests on port 4000...');
 });
