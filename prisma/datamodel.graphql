@@ -1,6 +1,9 @@
 type User {
   id: ID! @unique @id
-  name: String!
+  username: String! @unique
+  email: String! @unique
+  password: String!
+  exercises: [Exercise!]! @relation(name: "ExerciseToUser", onDelete: CASCADE)
 }
 
 type Exercise {
@@ -9,9 +12,9 @@ type Exercise {
   bodySection: String
   primaryMover: String
   movementType: String
-  trainingPhases: [TrainingPhase!]!
-  workoutTypes: [WorkoutType!]!
-  equipment: [EquipmentPiece!]!
+  trainingPhases: [TrainingPhase!]! @relation(name: "TrainingPhaseToExercise", onDelete: CASCADE)
+  workoutTypes: [WorkoutType!]! @relation(name: "WorkoutTypeToExercise", onDelete: CASCADE)
+  equipment: [EquipmentPiece!]! @relation(name: "EquipmentToExercise", onDelete: CASCADE)
 }
 
 type TrainingPhase {

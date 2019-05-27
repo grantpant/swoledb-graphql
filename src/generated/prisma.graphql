@@ -1,5 +1,5 @@
-# source: http://192.168.99.100:4466/swole/dev
-# timestamp: Fri May 17 2019 23:19:34 GMT-0500 (Central Daylight Time)
+# source: http://192.168.99.100:4466/swoledb/dev
+# timestamp: Sun May 26 2019 19:49:50 GMT-0500 (Central Daylight Time)
 
 type AggregateEquipmentPiece {
   count: Int!
@@ -26,7 +26,8 @@ type BatchPayload {
   count: Long!
 }
 
-type EquipmentPiece {
+type EquipmentPiece implements Node {
+  id: ID!
   name: String!
 }
 
@@ -46,6 +47,7 @@ input EquipmentPieceCreateInput {
 
 input EquipmentPieceCreateManyInput {
   create: [EquipmentPieceCreateInput!]
+  connect: [EquipmentPieceWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -58,10 +60,10 @@ type EquipmentPieceEdge {
 }
 
 enum EquipmentPieceOrderByInput {
-  name_ASC
-  name_DESC
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -69,6 +71,7 @@ enum EquipmentPieceOrderByInput {
 }
 
 type EquipmentPiecePreviousValues {
+  id: ID!
   name: String!
 }
 
@@ -109,12 +112,32 @@ input EquipmentPieceSubscriptionWhereInput {
   node: EquipmentPieceWhereInput
 }
 
+input EquipmentPieceUpdateDataInput {
+  name: String
+}
+
 input EquipmentPieceUpdateInput {
   name: String
 }
 
 input EquipmentPieceUpdateManyInput {
   create: [EquipmentPieceCreateInput!]
+  connect: [EquipmentPieceWhereUniqueInput!]
+  disconnect: [EquipmentPieceWhereUniqueInput!]
+  delete: [EquipmentPieceWhereUniqueInput!]
+  update: [EquipmentPieceUpdateWithWhereUniqueNestedInput!]
+  upsert: [EquipmentPieceUpsertWithWhereUniqueNestedInput!]
+}
+
+input EquipmentPieceUpdateWithWhereUniqueNestedInput {
+  where: EquipmentPieceWhereUniqueInput!
+  data: EquipmentPieceUpdateDataInput!
+}
+
+input EquipmentPieceUpsertWithWhereUniqueNestedInput {
+  where: EquipmentPieceWhereUniqueInput!
+  update: EquipmentPieceUpdateDataInput!
+  create: EquipmentPieceCreateInput!
 }
 
 input EquipmentPieceWhereInput {
@@ -126,6 +149,46 @@ input EquipmentPieceWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [EquipmentPieceWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   name: String
 
   """All values that are not equal to given value."""
@@ -168,6 +231,10 @@ input EquipmentPieceWhereInput {
   name_not_ends_with: String
 }
 
+input EquipmentPieceWhereUniqueInput {
+  id: ID
+}
+
 type Exercise implements Node {
   id: ID!
   name: String!
@@ -197,6 +264,11 @@ input ExerciseCreateInput {
   trainingPhases: TrainingPhaseCreateManyInput
   workoutTypes: WorkoutTypeCreateManyInput
   equipment: EquipmentPieceCreateManyInput
+}
+
+input ExerciseCreateManyInput {
+  create: [ExerciseCreateInput!]
+  connect: [ExerciseWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -270,6 +342,16 @@ input ExerciseSubscriptionWhereInput {
   node: ExerciseWhereInput
 }
 
+input ExerciseUpdateDataInput {
+  name: String
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: TrainingPhaseUpdateManyInput
+  workoutTypes: WorkoutTypeUpdateManyInput
+  equipment: EquipmentPieceUpdateManyInput
+}
+
 input ExerciseUpdateInput {
   name: String
   bodySection: String
@@ -278,6 +360,26 @@ input ExerciseUpdateInput {
   trainingPhases: TrainingPhaseUpdateManyInput
   workoutTypes: WorkoutTypeUpdateManyInput
   equipment: EquipmentPieceUpdateManyInput
+}
+
+input ExerciseUpdateManyInput {
+  create: [ExerciseCreateInput!]
+  connect: [ExerciseWhereUniqueInput!]
+  disconnect: [ExerciseWhereUniqueInput!]
+  delete: [ExerciseWhereUniqueInput!]
+  update: [ExerciseUpdateWithWhereUniqueNestedInput!]
+  upsert: [ExerciseUpsertWithWhereUniqueNestedInput!]
+}
+
+input ExerciseUpdateWithWhereUniqueNestedInput {
+  where: ExerciseWhereUniqueInput!
+  data: ExerciseUpdateDataInput!
+}
+
+input ExerciseUpsertWithWhereUniqueNestedInput {
+  where: ExerciseWhereUniqueInput!
+  update: ExerciseUpdateDataInput!
+  create: ExerciseCreateInput!
 }
 
 input ExerciseWhereInput {
@@ -512,24 +614,33 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createExercise(data: ExerciseCreateInput!): Exercise!
   createEquipmentPiece(data: EquipmentPieceCreateInput!): EquipmentPiece!
+  createExercise(data: ExerciseCreateInput!): Exercise!
   createWorkoutType(data: WorkoutTypeCreateInput!): WorkoutType!
   createTrainingPhase(data: TrainingPhaseCreateInput!): TrainingPhase!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateEquipmentPiece(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
+  updateWorkoutType(data: WorkoutTypeUpdateInput!, where: WorkoutTypeWhereUniqueInput!): WorkoutType
+  updateTrainingPhase(data: TrainingPhaseUpdateInput!, where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteEquipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
+  deleteWorkoutType(where: WorkoutTypeWhereUniqueInput!): WorkoutType
+  deleteTrainingPhase(where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertEquipmentPiece(where: EquipmentPieceWhereUniqueInput!, create: EquipmentPieceCreateInput!, update: EquipmentPieceUpdateInput!): EquipmentPiece!
   upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
+  upsertWorkoutType(where: WorkoutTypeWhereUniqueInput!, create: WorkoutTypeCreateInput!, update: WorkoutTypeUpdateInput!): WorkoutType!
+  upsertTrainingPhase(where: TrainingPhaseWhereUniqueInput!, create: TrainingPhaseCreateInput!, update: TrainingPhaseUpdateInput!): TrainingPhase!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyExercises(data: ExerciseUpdateInput!, where: ExerciseWhereInput): BatchPayload!
   updateManyEquipmentPieces(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereInput): BatchPayload!
+  updateManyExercises(data: ExerciseUpdateInput!, where: ExerciseWhereInput): BatchPayload!
   updateManyWorkoutTypes(data: WorkoutTypeUpdateInput!, where: WorkoutTypeWhereInput): BatchPayload!
   updateManyTrainingPhases(data: TrainingPhaseUpdateInput!, where: TrainingPhaseWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
   deleteManyEquipmentPieces(where: EquipmentPieceWhereInput): BatchPayload!
+  deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
   deleteManyWorkoutTypes(where: WorkoutTypeWhereInput): BatchPayload!
   deleteManyTrainingPhases(where: TrainingPhaseWhereInput): BatchPayload!
 }
@@ -563,15 +674,18 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
   equipmentPieces(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece]!
+  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
   workoutTypes(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkoutType]!
   trainingPhases(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TrainingPhase]!
   user(where: UserWhereUniqueInput!): User
+  equipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   exercise(where: ExerciseWhereUniqueInput!): Exercise
+  workoutType(where: WorkoutTypeWhereUniqueInput!): WorkoutType
+  trainingPhase(where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
   equipmentPiecesConnection(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EquipmentPieceConnection!
+  exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
   workoutTypesConnection(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WorkoutTypeConnection!
   trainingPhasesConnection(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TrainingPhaseConnection!
 
@@ -584,13 +698,14 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
   equipmentPiece(where: EquipmentPieceSubscriptionWhereInput): EquipmentPieceSubscriptionPayload
+  exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
   workoutType(where: WorkoutTypeSubscriptionWhereInput): WorkoutTypeSubscriptionPayload
   trainingPhase(where: TrainingPhaseSubscriptionWhereInput): TrainingPhaseSubscriptionPayload
 }
 
-type TrainingPhase {
+type TrainingPhase implements Node {
+  id: ID!
   name: String!
 }
 
@@ -610,6 +725,7 @@ input TrainingPhaseCreateInput {
 
 input TrainingPhaseCreateManyInput {
   create: [TrainingPhaseCreateInput!]
+  connect: [TrainingPhaseWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -622,10 +738,10 @@ type TrainingPhaseEdge {
 }
 
 enum TrainingPhaseOrderByInput {
-  name_ASC
-  name_DESC
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -633,6 +749,7 @@ enum TrainingPhaseOrderByInput {
 }
 
 type TrainingPhasePreviousValues {
+  id: ID!
   name: String!
 }
 
@@ -673,12 +790,32 @@ input TrainingPhaseSubscriptionWhereInput {
   node: TrainingPhaseWhereInput
 }
 
+input TrainingPhaseUpdateDataInput {
+  name: String
+}
+
 input TrainingPhaseUpdateInput {
   name: String
 }
 
 input TrainingPhaseUpdateManyInput {
   create: [TrainingPhaseCreateInput!]
+  connect: [TrainingPhaseWhereUniqueInput!]
+  disconnect: [TrainingPhaseWhereUniqueInput!]
+  delete: [TrainingPhaseWhereUniqueInput!]
+  update: [TrainingPhaseUpdateWithWhereUniqueNestedInput!]
+  upsert: [TrainingPhaseUpsertWithWhereUniqueNestedInput!]
+}
+
+input TrainingPhaseUpdateWithWhereUniqueNestedInput {
+  where: TrainingPhaseWhereUniqueInput!
+  data: TrainingPhaseUpdateDataInput!
+}
+
+input TrainingPhaseUpsertWithWhereUniqueNestedInput {
+  where: TrainingPhaseWhereUniqueInput!
+  update: TrainingPhaseUpdateDataInput!
+  create: TrainingPhaseCreateInput!
 }
 
 input TrainingPhaseWhereInput {
@@ -690,142 +827,6 @@ input TrainingPhaseWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [TrainingPhaseWhereInput!]
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-}
-
-type User implements Node {
-  id: ID!
-  name: String!
-}
-
-"""A connection to a list of items."""
-type UserConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
-}
-
-input UserCreateInput {
-  name: String!
-}
-
-"""An edge in a connection."""
-type UserEdge {
-  """The item at the end of the edge."""
-  node: User!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum UserOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type UserPreviousValues {
-  id: ID!
-  name: String!
-}
-
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserSubscriptionWhereInput!]
-
-  """The subscription event gets dispatched when it's listed in mutation_in"""
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-}
-
-input UserUpdateInput {
-  name: String
-}
-
-input UserWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -908,11 +909,292 @@ input UserWhereInput {
   name_not_ends_with: String
 }
 
-input UserWhereUniqueInput {
+input TrainingPhaseWhereUniqueInput {
   id: ID
 }
 
-type WorkoutType {
+type User implements Node {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+  exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise!]
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  username: String!
+  email: String!
+  password: String!
+  exercises: ExerciseCreateManyInput
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  username_ASC
+  username_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  username: String
+  email: String
+  password: String
+  exercises: ExerciseUpdateManyInput
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  username: String
+
+  """All values that are not equal to given value."""
+  username_not: String
+
+  """All values that are contained in given list."""
+  username_in: [String!]
+
+  """All values that are not contained in given list."""
+  username_not_in: [String!]
+
+  """All values less than the given value."""
+  username_lt: String
+
+  """All values less than or equal the given value."""
+  username_lte: String
+
+  """All values greater than the given value."""
+  username_gt: String
+
+  """All values greater than or equal the given value."""
+  username_gte: String
+
+  """All values containing the given string."""
+  username_contains: String
+
+  """All values not containing the given string."""
+  username_not_contains: String
+
+  """All values starting with the given string."""
+  username_starts_with: String
+
+  """All values not starting with the given string."""
+  username_not_starts_with: String
+
+  """All values ending with the given string."""
+  username_ends_with: String
+
+  """All values not ending with the given string."""
+  username_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  exercises_every: ExerciseWhereInput
+  exercises_some: ExerciseWhereInput
+  exercises_none: ExerciseWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  username: String
+  email: String
+}
+
+type WorkoutType implements Node {
+  id: ID!
   name: String!
 }
 
@@ -932,6 +1214,7 @@ input WorkoutTypeCreateInput {
 
 input WorkoutTypeCreateManyInput {
   create: [WorkoutTypeCreateInput!]
+  connect: [WorkoutTypeWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -944,10 +1227,10 @@ type WorkoutTypeEdge {
 }
 
 enum WorkoutTypeOrderByInput {
-  name_ASC
-  name_DESC
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -955,6 +1238,7 @@ enum WorkoutTypeOrderByInput {
 }
 
 type WorkoutTypePreviousValues {
+  id: ID!
   name: String!
 }
 
@@ -995,12 +1279,32 @@ input WorkoutTypeSubscriptionWhereInput {
   node: WorkoutTypeWhereInput
 }
 
+input WorkoutTypeUpdateDataInput {
+  name: String
+}
+
 input WorkoutTypeUpdateInput {
   name: String
 }
 
 input WorkoutTypeUpdateManyInput {
   create: [WorkoutTypeCreateInput!]
+  connect: [WorkoutTypeWhereUniqueInput!]
+  disconnect: [WorkoutTypeWhereUniqueInput!]
+  delete: [WorkoutTypeWhereUniqueInput!]
+  update: [WorkoutTypeUpdateWithWhereUniqueNestedInput!]
+  upsert: [WorkoutTypeUpsertWithWhereUniqueNestedInput!]
+}
+
+input WorkoutTypeUpdateWithWhereUniqueNestedInput {
+  where: WorkoutTypeWhereUniqueInput!
+  data: WorkoutTypeUpdateDataInput!
+}
+
+input WorkoutTypeUpsertWithWhereUniqueNestedInput {
+  where: WorkoutTypeWhereUniqueInput!
+  update: WorkoutTypeUpdateDataInput!
+  create: WorkoutTypeCreateInput!
 }
 
 input WorkoutTypeWhereInput {
@@ -1012,6 +1316,46 @@ input WorkoutTypeWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [WorkoutTypeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   name: String
 
   """All values that are not equal to given value."""
@@ -1052,4 +1396,8 @@ input WorkoutTypeWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+}
+
+input WorkoutTypeWhereUniqueInput {
+  id: ID
 }
