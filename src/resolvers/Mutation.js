@@ -23,6 +23,32 @@ const Mutation = {
       token
     };
   },
+  async login(parent, args, { prisma, request }, info) {
+    const user = await prisma.query.user({
+      where: { username: args.data.username }
+    });
+
+    if (!user) {
+      throw new Error('Login failed');
+    }
+
+    const passwordVerified = await bcrypt.compare(args.data.password, user.password);
+
+    if (!passwordVerified) {
+      throw new Error('Login failed');
+    }
+
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7 days' }
+    );
+
+    return {
+      user,
+      token
+    }
+  },
   async createExercise(parent, args, { prisma }, info) {
     const { name, bodySection, primaryMover, movementType, trainingPhases, workoutTypes, equipment } = args.data;
 

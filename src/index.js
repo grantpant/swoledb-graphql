@@ -11,9 +11,12 @@ const server = new GraphQLServer({
     Query,
     Mutation
   },
-  context: {
-    mockDb,
-    prisma
+  context(request) {
+    return {
+      mockDb,
+      prisma,
+      request
+    }
   }
 });
 

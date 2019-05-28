@@ -6,7 +6,7 @@ type Query {
 
 type Mutation {
   createUser(data: CreateUserInput): AuthPayload!
-  login(data: LoginInput!): AuthPayload!
+  login(data: LoginUserInput!): AuthPayload!
   createExercise(data: CreateExerciseInput!): Exercise!
 }
 
@@ -16,7 +16,7 @@ input CreateUserInput {
   password: String!
 }
 
-input LoginInput {
+input LoginUserInput {
   username: String!
   password: String!
 }
