@@ -69,6 +69,15 @@ const Mutation = {
         }
       }
     }, info);
+
+    // // Dummy response for testing
+    // return {
+    //   name: 'Dirty Sanchez',
+    //   owner: {
+    //     id: '2',
+    //     username: 'number2'
+    //   }
+    // };
   }
 };
 
