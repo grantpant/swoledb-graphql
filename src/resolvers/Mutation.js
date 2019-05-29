@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import verifyUser from '../utils/verifyUser';
 
 const Mutation = {
   async createUser(parent, args, { prisma }, info) {
@@ -49,8 +50,10 @@ const Mutation = {
       token
     }
   },
-  async createExercise(parent, args, { prisma }, info) {
+  async createExercise(parent, args, { prisma, request }, info) {
     const { name, bodySection, primaryMover, movementType, trainingPhases, workoutTypes, equipment } = args.data;
+
+    const userId = verifyUser(request);
 
     return await prisma.mutation.createExercise({
       data: {
@@ -60,7 +63,10 @@ const Mutation = {
         movementType,
         trainingPhases: trainingPhases ? { create: trainingPhases } : null,
         workoutTypes: workoutTypes ? { create: workoutTypes } : null,
-        equipment: equipment ? { create: equipment } : null
+        equipment: equipment ? { create: equipment } : null,
+        owner: {
+          connect: { id: userId }
+        }
       }
     }, info);
   }

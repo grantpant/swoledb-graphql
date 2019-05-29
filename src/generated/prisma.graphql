@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4466/swoledb/dev
-# timestamp: Sun May 26 2019 19:49:50 GMT-0500 (Central Daylight Time)
+# timestamp: Tue May 28 2019 19:11:33 GMT-0500 (Central Daylight Time)
 
 type AggregateEquipmentPiece {
   count: Int!
@@ -244,6 +244,7 @@ type Exercise implements Node {
   trainingPhases(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TrainingPhase!]
   workoutTypes(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkoutType!]
   equipment(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece!]
+  owner(where: UserWhereInput): User!
 }
 
 """A connection to a list of items."""
@@ -264,11 +265,22 @@ input ExerciseCreateInput {
   trainingPhases: TrainingPhaseCreateManyInput
   workoutTypes: WorkoutTypeCreateManyInput
   equipment: EquipmentPieceCreateManyInput
+  owner: UserCreateOneWithoutExercisesInput!
 }
 
-input ExerciseCreateManyInput {
-  create: [ExerciseCreateInput!]
+input ExerciseCreateManyWithoutOwnerInput {
+  create: [ExerciseCreateWithoutOwnerInput!]
   connect: [ExerciseWhereUniqueInput!]
+}
+
+input ExerciseCreateWithoutOwnerInput {
+  name: String!
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: TrainingPhaseCreateManyInput
+  workoutTypes: WorkoutTypeCreateManyInput
+  equipment: EquipmentPieceCreateManyInput
 }
 
 """An edge in a connection."""
@@ -342,16 +354,6 @@ input ExerciseSubscriptionWhereInput {
   node: ExerciseWhereInput
 }
 
-input ExerciseUpdateDataInput {
-  name: String
-  bodySection: String
-  primaryMover: String
-  movementType: String
-  trainingPhases: TrainingPhaseUpdateManyInput
-  workoutTypes: WorkoutTypeUpdateManyInput
-  equipment: EquipmentPieceUpdateManyInput
-}
-
 input ExerciseUpdateInput {
   name: String
   bodySection: String
@@ -360,26 +362,37 @@ input ExerciseUpdateInput {
   trainingPhases: TrainingPhaseUpdateManyInput
   workoutTypes: WorkoutTypeUpdateManyInput
   equipment: EquipmentPieceUpdateManyInput
+  owner: UserUpdateOneWithoutExercisesInput
 }
 
-input ExerciseUpdateManyInput {
-  create: [ExerciseCreateInput!]
+input ExerciseUpdateManyWithoutOwnerInput {
+  create: [ExerciseCreateWithoutOwnerInput!]
   connect: [ExerciseWhereUniqueInput!]
   disconnect: [ExerciseWhereUniqueInput!]
   delete: [ExerciseWhereUniqueInput!]
-  update: [ExerciseUpdateWithWhereUniqueNestedInput!]
-  upsert: [ExerciseUpsertWithWhereUniqueNestedInput!]
+  update: [ExerciseUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [ExerciseUpsertWithWhereUniqueWithoutOwnerInput!]
 }
 
-input ExerciseUpdateWithWhereUniqueNestedInput {
-  where: ExerciseWhereUniqueInput!
-  data: ExerciseUpdateDataInput!
+input ExerciseUpdateWithoutOwnerDataInput {
+  name: String
+  bodySection: String
+  primaryMover: String
+  movementType: String
+  trainingPhases: TrainingPhaseUpdateManyInput
+  workoutTypes: WorkoutTypeUpdateManyInput
+  equipment: EquipmentPieceUpdateManyInput
 }
 
-input ExerciseUpsertWithWhereUniqueNestedInput {
+input ExerciseUpdateWithWhereUniqueWithoutOwnerInput {
   where: ExerciseWhereUniqueInput!
-  update: ExerciseUpdateDataInput!
-  create: ExerciseCreateInput!
+  data: ExerciseUpdateWithoutOwnerDataInput!
+}
+
+input ExerciseUpsertWithWhereUniqueWithoutOwnerInput {
+  where: ExerciseWhereUniqueInput!
+  update: ExerciseUpdateWithoutOwnerDataInput!
+  create: ExerciseCreateWithoutOwnerInput!
 }
 
 input ExerciseWhereInput {
@@ -600,6 +613,7 @@ input ExerciseWhereInput {
   equipment_every: EquipmentPieceWhereInput
   equipment_some: EquipmentPieceWhereInput
   equipment_none: EquipmentPieceWhereInput
+  owner: UserWhereInput
 }
 
 input ExerciseWhereUniqueInput {
@@ -614,33 +628,33 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createEquipmentPiece(data: EquipmentPieceCreateInput!): EquipmentPiece!
   createExercise(data: ExerciseCreateInput!): Exercise!
+  createEquipmentPiece(data: EquipmentPieceCreateInput!): EquipmentPiece!
   createWorkoutType(data: WorkoutTypeCreateInput!): WorkoutType!
   createTrainingPhase(data: TrainingPhaseCreateInput!): TrainingPhase!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateEquipmentPiece(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   updateExercise(data: ExerciseUpdateInput!, where: ExerciseWhereUniqueInput!): Exercise
+  updateEquipmentPiece(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   updateWorkoutType(data: WorkoutTypeUpdateInput!, where: WorkoutTypeWhereUniqueInput!): WorkoutType
   updateTrainingPhase(data: TrainingPhaseUpdateInput!, where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteEquipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   deleteExercise(where: ExerciseWhereUniqueInput!): Exercise
+  deleteEquipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   deleteWorkoutType(where: WorkoutTypeWhereUniqueInput!): WorkoutType
   deleteTrainingPhase(where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertEquipmentPiece(where: EquipmentPieceWhereUniqueInput!, create: EquipmentPieceCreateInput!, update: EquipmentPieceUpdateInput!): EquipmentPiece!
   upsertExercise(where: ExerciseWhereUniqueInput!, create: ExerciseCreateInput!, update: ExerciseUpdateInput!): Exercise!
+  upsertEquipmentPiece(where: EquipmentPieceWhereUniqueInput!, create: EquipmentPieceCreateInput!, update: EquipmentPieceUpdateInput!): EquipmentPiece!
   upsertWorkoutType(where: WorkoutTypeWhereUniqueInput!, create: WorkoutTypeCreateInput!, update: WorkoutTypeUpdateInput!): WorkoutType!
   upsertTrainingPhase(where: TrainingPhaseWhereUniqueInput!, create: TrainingPhaseCreateInput!, update: TrainingPhaseUpdateInput!): TrainingPhase!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyEquipmentPieces(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereInput): BatchPayload!
   updateManyExercises(data: ExerciseUpdateInput!, where: ExerciseWhereInput): BatchPayload!
+  updateManyEquipmentPieces(data: EquipmentPieceUpdateInput!, where: EquipmentPieceWhereInput): BatchPayload!
   updateManyWorkoutTypes(data: WorkoutTypeUpdateInput!, where: WorkoutTypeWhereInput): BatchPayload!
   updateManyTrainingPhases(data: TrainingPhaseUpdateInput!, where: TrainingPhaseWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyEquipmentPieces(where: EquipmentPieceWhereInput): BatchPayload!
   deleteManyExercises(where: ExerciseWhereInput): BatchPayload!
+  deleteManyEquipmentPieces(where: EquipmentPieceWhereInput): BatchPayload!
   deleteManyWorkoutTypes(where: WorkoutTypeWhereInput): BatchPayload!
   deleteManyTrainingPhases(where: TrainingPhaseWhereInput): BatchPayload!
 }
@@ -674,18 +688,18 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  equipmentPieces(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece]!
   exercises(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Exercise]!
+  equipmentPieces(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EquipmentPiece]!
   workoutTypes(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [WorkoutType]!
   trainingPhases(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TrainingPhase]!
   user(where: UserWhereUniqueInput!): User
-  equipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   exercise(where: ExerciseWhereUniqueInput!): Exercise
+  equipmentPiece(where: EquipmentPieceWhereUniqueInput!): EquipmentPiece
   workoutType(where: WorkoutTypeWhereUniqueInput!): WorkoutType
   trainingPhase(where: TrainingPhaseWhereUniqueInput!): TrainingPhase
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  equipmentPiecesConnection(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EquipmentPieceConnection!
   exercisesConnection(where: ExerciseWhereInput, orderBy: ExerciseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExerciseConnection!
+  equipmentPiecesConnection(where: EquipmentPieceWhereInput, orderBy: EquipmentPieceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EquipmentPieceConnection!
   workoutTypesConnection(where: WorkoutTypeWhereInput, orderBy: WorkoutTypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WorkoutTypeConnection!
   trainingPhasesConnection(where: TrainingPhaseWhereInput, orderBy: TrainingPhaseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TrainingPhaseConnection!
 
@@ -698,8 +712,8 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  equipmentPiece(where: EquipmentPieceSubscriptionWhereInput): EquipmentPieceSubscriptionPayload
   exercise(where: ExerciseSubscriptionWhereInput): ExerciseSubscriptionPayload
+  equipmentPiece(where: EquipmentPieceSubscriptionWhereInput): EquipmentPieceSubscriptionPayload
   workoutType(where: WorkoutTypeSubscriptionWhereInput): WorkoutTypeSubscriptionPayload
   trainingPhase(where: TrainingPhaseSubscriptionWhereInput): TrainingPhaseSubscriptionPayload
 }
@@ -935,7 +949,18 @@ input UserCreateInput {
   username: String!
   email: String!
   password: String!
-  exercises: ExerciseCreateManyInput
+  exercises: ExerciseCreateManyWithoutOwnerInput
+}
+
+input UserCreateOneWithoutExercisesInput {
+  create: UserCreateWithoutExercisesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutExercisesInput {
+  username: String!
+  email: String!
+  password: String!
 }
 
 """An edge in a connection."""
@@ -1010,7 +1035,26 @@ input UserUpdateInput {
   username: String
   email: String
   password: String
-  exercises: ExerciseUpdateManyInput
+  exercises: ExerciseUpdateManyWithoutOwnerInput
+}
+
+input UserUpdateOneWithoutExercisesInput {
+  create: UserCreateWithoutExercisesInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutExercisesDataInput
+  upsert: UserUpsertWithoutExercisesInput
+}
+
+input UserUpdateWithoutExercisesDataInput {
+  username: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutExercisesInput {
+  update: UserUpdateWithoutExercisesDataInput!
+  create: UserCreateWithoutExercisesInput!
 }
 
 input UserWhereInput {

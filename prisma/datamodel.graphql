@@ -15,6 +15,7 @@ type Exercise {
   trainingPhases: [TrainingPhase!]! @relation(name: "TrainingPhaseToExercise", onDelete: CASCADE)
   workoutTypes: [WorkoutType!]! @relation(name: "WorkoutTypeToExercise", onDelete: CASCADE)
   equipment: [EquipmentPiece!]! @relation(name: "EquipmentToExercise", onDelete: CASCADE)
+  owner: User! @relation(name: "ExerciseToUser", onDelete: SET_NULL)
 }
 
 type TrainingPhase {

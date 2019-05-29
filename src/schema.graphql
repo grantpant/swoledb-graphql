@@ -59,6 +59,7 @@ type Exercise {
   trainingPhases: [TrainingPhase!]
   workoutTypes: [WorkoutType!]
   equipment: [EquipmentPiece!]
+  owner: User!
 }
 
 type AuthPayload {
