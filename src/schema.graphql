@@ -1,7 +1,8 @@
-# import ExerciseWhereInput from './generated/prisma.graphql'
+# import ExerciseWhereInput, ExerciseWhereUniqueInput from './generated/prisma.graphql'
 
 type Query {
   exercises(where: ExerciseWhereInput): [Exercise!]!
+  exercise(where: ExerciseWhereUniqueInput!): Exercise!
 }
 
 type Mutation {
@@ -52,6 +53,7 @@ type User {
 }
 
 type Exercise {
+  id: ID!
   name: String!
   bodySection: String
   primaryMover: String
