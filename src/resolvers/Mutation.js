@@ -50,12 +50,12 @@ const Mutation = {
       token
     }
   },
-  async createExercise(parent, args, { prisma, request }, info) {
+  createExercise(parent, args, { prisma, request }, info) {
     const { name, bodySection, primaryMover, movementType, trainingPhases, workoutTypes, equipment } = args.data;
 
     const userId = verifyUser(request);
 
-    return await prisma.mutation.createExercise({
+    return prisma.mutation.createExercise({
       data: {
         name,
         bodySection,
@@ -78,6 +78,11 @@ const Mutation = {
     //     username: 'number2'
     //   }
     // };
+  },
+  updateExercise(parent, args, { prisma }, info) {
+    console.log('AAAAARRRRGGGGSS: ', JSON.stringify(args, undefined, 2))
+
+    return prisma.mutation.updateExercise(args, info);
   }
 };
 

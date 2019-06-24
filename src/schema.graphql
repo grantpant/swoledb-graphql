@@ -1,4 +1,4 @@
-# import ExerciseWhereInput, ExerciseWhereUniqueInput from './generated/prisma.graphql'
+# import ExerciseWhereInput, ExerciseUpdateInput from './generated/prisma.graphql'
 
 type Query {
   exercises(where: ExerciseWhereInput): [Exercise!]!
@@ -9,6 +9,10 @@ type Mutation {
   createUser(data: CreateUserInput): AuthPayload!
   login(data: LoginUserInput!): AuthPayload!
   createExercise(data: CreateExerciseInput!): Exercise!
+  updateExercise(
+    data: ExerciseUpdateInput!,
+    where: ExerciseWhereUniqueInput!
+  ): Exercise!
 }
 
 input CreateUserInput {
@@ -30,6 +34,10 @@ input CreateExerciseInput {
   trainingPhases: [TrainingPhaseInput!]
   workoutTypes: [WorkoutTypeInput!]
   equipment: [EquipmentPieceInput!]
+}
+
+input ExerciseWhereUniqueInput {
+  id: ID
 }
 
 input TrainingPhaseInput {
@@ -70,13 +78,16 @@ type AuthPayload {
 }
 
 type TrainingPhase {
+  id: ID!
   name: String!
 }
 
 type WorkoutType {
+  id: ID!
   name: String!
 }
 
 type EquipmentPiece {
+  id: ID!
   name: String!
 }
