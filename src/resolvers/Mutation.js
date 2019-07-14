@@ -83,6 +83,9 @@ const Mutation = {
     console.log('AAAAARRRRGGGGSS: ', JSON.stringify(args, undefined, 2))
 
     return prisma.mutation.updateExercise(args, info);
+  },
+  deleteExercise(parent, args, { prisma }, info) {
+    return prisma.mutation.deleteExercise(args, info);
   }
 };
 

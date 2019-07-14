@@ -13,6 +13,7 @@ type Mutation {
     data: ExerciseUpdateInput!,
     where: ExerciseWhereUniqueInput!
   ): Exercise!
+  deleteExercise(where: ExerciseWhereUniqueInput!): Exercise!
 }
 
 input CreateUserInput {
